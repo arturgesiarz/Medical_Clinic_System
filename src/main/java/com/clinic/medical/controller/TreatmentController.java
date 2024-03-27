@@ -30,10 +30,16 @@ public class TreatmentController {
         return new ResponseEntity<>("Treatment was deleted successfully!", HttpStatus.CREATED);
     }
 
-    @PostMapping("/attribute-patient/{patientID}/to-treatment/{treatmentID}")
+    @PostMapping("/assign-patient-to-treatment/{patientID}/{treatmentID}")
     public ResponseEntity<String> assignToTreatment(@PathVariable Long patientID, @PathVariable Long treatmentID) {
         treatmentService.assign(patientID, treatmentID);
         return new ResponseEntity<>("The patient has been successfully enrolled!", HttpStatus.CREATED);
+    }
+
+    @PostMapping("/took-place-treatment/{patientID}/{treatmentID}")
+    public ResponseEntity<String> tookPlaceTreatment(@PathVariable Long patientID, @PathVariable Long treatmentID) {
+        treatmentService.tookPlace(patientID, treatmentID);
+        return new ResponseEntity<>("The patient has been successfully took placed treatment", HttpStatus.CREATED);
     }
 
     @GetMapping("/show-all")
