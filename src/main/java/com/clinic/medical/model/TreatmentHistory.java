@@ -28,6 +28,6 @@ public class TreatmentHistory {
     private Treatment treatment;
 
     private Instant treatmentDate;
-    private boolean itTookPlace;
+    private Boolean itTookPlace;
 
 }

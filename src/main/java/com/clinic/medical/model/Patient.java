@@ -25,6 +25,4 @@ public class Patient {
     private String pesel;
     private String phoneNumber;
     private String email;
-    private Instant created;
-    private Instant lastModification;
 }
