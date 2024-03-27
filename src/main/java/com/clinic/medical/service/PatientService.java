@@ -1,5 +1,6 @@
 package com.clinic.medical.service;
 import com.clinic.medical.dto.RegisterRequest;
+import com.clinic.medical.exceptions.PatientNotFoundException;
 import com.clinic.medical.model.Patient;
 import com.clinic.medical.repository.PatientRepository;
 import lombok.AllArgsConstructor;
@@ -28,5 +29,13 @@ public class PatientService {
                 .created(Instant.now()).build();
 
         patientRepository.save(patient);
+    }
+
+    @Transactional
+    public void delete(Long patientID) {
+        Patient patient = patientRepository.findById(patientID)
+                .orElseThrow(() -> new PatientNotFoundException(patientID));
+
+        patientRepository.delete(patient);
     }
 }

@@ -5,10 +5,7 @@ import com.clinic.medical.service.PatientService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -20,6 +17,12 @@ public class PatientController {
     public ResponseEntity<String> addPatient(@RequestBody RegisterRequest registerRequest) {
         patientService.save(registerRequest);
         return new ResponseEntity<>("Patient was added successfully!", HttpStatus.CREATED);
+    }
+
+    @PostMapping("/delete/account/{patientID}")
+    public ResponseEntity<String> deletePatient(@PathVariable Long patientID) {
+        patientService.delete(patientID);
+        return new ResponseEntity<>("Patient was deleted successfully!", HttpStatus.CREATED);
     }
 
 }
