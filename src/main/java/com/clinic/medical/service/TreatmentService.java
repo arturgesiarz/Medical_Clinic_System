@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,7 +35,7 @@ public class TreatmentService {
     }
 
     public List<Treatment> getAllTreatments() {
-        return null;
+        return new ArrayList<>(treatmentRepository.findAll());
     }
     @Transactional
     public void assign(Long patientID, Long treatmentID) {
