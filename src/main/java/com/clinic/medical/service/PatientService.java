@@ -1,6 +1,8 @@
 package com.clinic.medical.service;
 import com.clinic.medical.dto.RegisterRequest;
+import com.clinic.medical.exceptions.AddressNotFoundException;
 import com.clinic.medical.exceptions.PatientNotFoundException;
+import com.clinic.medical.exceptions.TreatmentForUserNotFoundException;
 import com.clinic.medical.model.*;
 import com.clinic.medical.repository.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +21,7 @@ public class PatientService {
     private final CountryRepository countryRepository;
     private final PatientRepository patientRepository;
     private final VoivodeshipRepository voivodeshipRepository;
+    private final TreatmentHistoryRepository treatmentHistoryRepository;
 
     @Transactional
     public void save(RegisterRequest registerRequest) {
@@ -72,10 +76,19 @@ public class PatientService {
 
     @Transactional
     public void delete(Long patientID) {
-//        Patient patient = patientRepository.findById(patientID)
-//                .orElseThrow(() -> new PatientNotFoundException(patientID));
-//
-//        patientRepository.delete(patient);
+        Patient patient = patientRepository.findById(patientID)
+                .orElseThrow(() -> new PatientNotFoundException(patientID));
+
+        Optional<Address> address = addressRepository.findByPatient(patient);
+        Optional<List<TreatmentHistory>> treatmentHistoryList = treatmentHistoryRepository.findByPatient(patient);
+
+        if (treatmentHistoryList.isPresent()) {
+            treatmentHistoryRepository.deleteAll(treatmentHistoryList.get());
+        }
+        if (address.isPresent()) {
+            addressRepository.delete(address.get());
+        }
+        patientRepository.delete(patient);
     }
 
     @Transactional
