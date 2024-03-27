@@ -1,15 +1,12 @@
 package com.clinic.medical.service;
 import com.clinic.medical.dto.RegisterRequest;
-import com.clinic.medical.exceptions.AddressNotFoundException;
 import com.clinic.medical.exceptions.PatientNotFoundException;
-import com.clinic.medical.exceptions.TreatmentForUserNotFoundException;
 import com.clinic.medical.model.*;
 import com.clinic.medical.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,30 +30,30 @@ public class PatientService {
                 .email(registerRequest.getEmail()).build();
 
         Address address = new Address();
+        addedAddress(registerRequest, patient, address);
 
+        addressRepository.save(address);
+        patientRepository.save(patient);
+    }
+
+    private void addedAddress(RegisterRequest registerRequest, Patient patient, Address address) {
         address.setPatient(patient);
 
         // country added to address
-        Optional<Country> country = countryRepository.findByCountry(registerRequest.getCountry());
-        if (country.isPresent()) {
-            address.setCountry(country.get());
-        } else {
-            Country newCountry = Country.builder().country(registerRequest.getCountry()).build();
-            countryRepository.save(newCountry);
-            address.setCountry(newCountry);
-        }
+        addedCountryToAddress(registerRequest, address);
 
         // city added to address
-        Optional<City> city = cityRepository.findByCity(registerRequest.getCity());
-        if (city.isPresent()) {
-            address.setCity(city.get());
-        } else {
-            City newCity = City.builder().city(registerRequest.getCity()).build();
-            cityRepository.save(newCity);
-            address.setCity(newCity);
-        }
+        addedCityToAddress(registerRequest, address);
 
         // voivodeship added to address
+        addedVoivodeshipToAddress(registerRequest, address);
+
+        address.setZipCode(registerRequest.getZipCode());
+        address.setStreet(registerRequest.getStreet());
+        address.setFlatNumber(registerRequest.getFlatNumber());
+    }
+
+    private void addedVoivodeshipToAddress(RegisterRequest registerRequest, Address address) {
         Optional<Voivodeship> voivodeship = voivodeshipRepository.findByVoivodeship(registerRequest.getVoivodeship());
         if (voivodeship.isPresent()) {
             address.setVoivodeship(voivodeship.get());
@@ -65,13 +62,28 @@ public class PatientService {
             voivodeshipRepository.save(newVoivodeship);
             address.setVoivodeship(newVoivodeship);
         }
+    }
 
-        address.setZipCode(registerRequest.getZipCode());
-        address.setStreet(registerRequest.getStreet());
-        address.setFlatNumber(registerRequest.getFlatNumber());
+    private void addedCityToAddress(RegisterRequest registerRequest, Address address) {
+        Optional<City> city = cityRepository.findByCity(registerRequest.getCity());
+        if (city.isPresent()) {
+            address.setCity(city.get());
+        } else {
+            City newCity = City.builder().city(registerRequest.getCity()).build();
+            cityRepository.save(newCity);
+            address.setCity(newCity);
+        }
+    }
 
-        addressRepository.save(address);
-        patientRepository.save(patient);
+    private void addedCountryToAddress(RegisterRequest registerRequest, Address address) {
+        Optional<Country> country = countryRepository.findByCountry(registerRequest.getCountry());
+        if (country.isPresent()) {
+            address.setCountry(country.get());
+        } else {
+            Country newCountry = Country.builder().country(registerRequest.getCountry()).build();
+            countryRepository.save(newCountry);
+            address.setCountry(newCountry);
+        }
     }
 
     @Transactional
@@ -93,31 +105,29 @@ public class PatientService {
 
     @Transactional
     public void edit(Long patientID, RegisterRequest editRequest) {
-//        Patient patient = patientRepository.findById(patientID)
-//                .orElseThrow(() -> new PatientNotFoundException(patientID));
-//
-//        if (!editRequest.getLastName().isEmpty()) {
-//            patient.setLastName(editRequest.getLastName());
-//        }
-//        if (!editRequest.getFirstName().isEmpty()) {
-//            patient.setFirstName(editRequest.getFirstName());
-//        }
-//        if (!editRequest.getStreet().isEmpty()) {
-//            patient.setStreet(editRequest.getStreet());
-//        }
-//        if (!editRequest.getCity().isEmpty()) {
-//            patient.setCity(editRequest.getCity());
-//        }
-//        if (!editRequest.getZipCode().isEmpty()) {
-//            patient.setZipCode(editRequest.getZipCode());
-//        }
-//        if (!editRequest.getPhoneNumber().isEmpty()) {
-//            patient.setPhoneNumber(editRequest.getPhoneNumber());
-//        }
-//        if (!editRequest.getEmail().isEmpty()) {
-//            patient.setEmail(editRequest.getEmail());
-//        }
-//        patient.setLastModification(Instant.now());
+        Patient patient = patientRepository.findById(patientID)
+                .orElseThrow(() -> new PatientNotFoundException(patientID));
+
+
+        // change in basic information
+        if (!editRequest.getLastName().isEmpty()) {
+            patient.setLastName(editRequest.getLastName());
+        }
+        if (!editRequest.getFirstName().isEmpty()) {
+            patient.setFirstName(editRequest.getFirstName());
+        }
+        if (!editRequest.getPhoneNumber().isEmpty()) {
+            patient.setPhoneNumber(editRequest.getPhoneNumber());
+        }
+        if (!editRequest.getEmail().isEmpty()) {
+            patient.setEmail(editRequest.getEmail());
+        }
+
+        // change address
+        Optional<Address> address = addressRepository.findByPatient(patient);
+        if (address.isPresent()) {
+            addedAddress(editRequest, patient, address.get());
+        }
 
     }
 }
