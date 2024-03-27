@@ -1,15 +1,21 @@
 package com.clinic.medical.model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +26,7 @@ public class Patient {
     private String street;
     private String city;
     private String zipCode;
+    private String phoneNumber;
+    private String email;
+    private Instant created;
 }
