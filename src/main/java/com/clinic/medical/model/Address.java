@@ -27,6 +27,10 @@ public class Address {
     @JoinColumn( name = "cityID", referencedColumnName = "cityID" )
     private City city;
 
+    @ManyToOne( fetch = LAZY )
+    @JoinColumn( name = "voivodeshipID", referencedColumnName = "voivodeshipID" )
+    private Voivodeship voivodeship;
+
     private String zipCode;
     private String street;
     private Integer flatNumber;

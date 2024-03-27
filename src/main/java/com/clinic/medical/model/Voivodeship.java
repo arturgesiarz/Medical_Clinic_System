@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Voivodship {
+public class Voivodeship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long voivodshipID;
-    private String voivodship;
+    private Long voivodeshipID;
+    private String voivodeship;
 
 }
