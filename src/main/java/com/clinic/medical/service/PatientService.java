@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -135,5 +134,26 @@ public class PatientService {
 
     public List<Patient> getAllPatients() {
         return new ArrayList<>(patientRepository.findAll());
+    }
+
+    public Patient getPatientGeneral(Long patientID) {
+        return patientRepository.findById(patientID)
+                .orElseThrow(() -> new PatientNotFoundException(patientID));
+    }
+
+    public Address getPatientAddress(Long patientID) {
+        Patient patient = patientRepository.findById(patientID)
+                .orElseThrow(() -> new PatientNotFoundException(patientID));
+
+        return addressRepository.findByPatient(patient)
+                .orElseThrow(RuntimeException::new);
+    }
+
+    public List<TreatmentHistory> getPatientTreatmentHistory(Long patientID) {
+        Patient patient = patientRepository.findById(patientID)
+                .orElseThrow(() -> new PatientNotFoundException(patientID));
+
+        return treatmentHistoryRepository.findByPatient(patient)
+                .orElseThrow(() -> new PatientNotFoundException(patientID));
     }
 }
