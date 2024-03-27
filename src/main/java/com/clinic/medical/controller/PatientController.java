@@ -25,4 +25,10 @@ public class PatientController {
         return new ResponseEntity<>("Patient was deleted successfully!", HttpStatus.CREATED);
     }
 
+    @PostMapping("/edit/account/{patientID}")
+    public ResponseEntity<String> editPatient(@PathVariable Long patientID, @RequestBody RegisterRequest editRequest) {
+        patientService.edit(patientID, editRequest);
+        return new ResponseEntity<>("Patient was edited successfully!", HttpStatus.CREATED);
+    }
+
 }
