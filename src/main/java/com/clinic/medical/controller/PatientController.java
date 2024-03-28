@@ -38,6 +38,29 @@ public class PatientController {
         return new ResponseEntity<>("Patient was edited successfully!", HttpStatus.CREATED);
     }
 
+    @GetMapping("/search-by-name/{name}")
+    public ResponseEntity<List<Patient>> searchPatientsByName(@PathVariable String name) {
+        return ResponseEntity
+                .status(OK)
+                .body(patientService.searchByName(name));
+
+    }
+
+    @GetMapping("/search-by-surname/{surname}")
+    public ResponseEntity<List<Patient>> searchPatientsBySurname(@PathVariable String surname) {
+        return ResponseEntity
+                .status(OK)
+                .body(patientService.searchBySurname(surname));
+
+    }
+
+    @GetMapping("/search-by-fullname/{name}/{surname}")
+    public ResponseEntity<List<Patient>> searchPatientsByFullname(@PathVariable String name, @PathVariable String surname) {
+        return ResponseEntity
+                .status(OK)
+                .body(patientService.search(name, surname));
+    }
+
     @GetMapping("/show-all")
     public ResponseEntity<List<Patient>> getAllPatients(){
         return ResponseEntity

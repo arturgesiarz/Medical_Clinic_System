@@ -157,4 +157,19 @@ public class PatientService {
         return treatmentHistoryRepository.findByPatient(patient)
                 .orElseThrow(() -> new PatientNotFoundException(patientID));
     }
+
+    public List<Patient> search(String name, String surname) {
+        return patientRepository.findByFirstNameAndLastName(name, surname)
+                .orElseThrow(() -> new PatientNotFoundException());
+    }
+
+    public List<Patient> searchByName(String name) {
+        return patientRepository.findByFirstNameStartingWith(name)
+                .orElseThrow(() -> new PatientNotFoundException());
+    }
+
+    public List<Patient>  searchBySurname(String surname) {
+        return patientRepository.findByLastNameStartingWith(surname)
+                .orElseThrow(() -> new PatientNotFoundException());
+    }
 }
