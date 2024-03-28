@@ -18,6 +18,9 @@ It is a system for the operation of a medical clinic, which makes it possible, f
 ## Before starting
   1.  Make sure you have Java installed
   2.  Make sure you have Maven installed
+  3.  Make sure you have MySQL installed
+  4.  Please change 4, 5 and 6 line in [this file](https://github.com/arturgesiarz/Medical_Clinic_System/blob/origin/src/main/resources/application.properties).
+     Line 4 is your local link to your database, line 5 is your local login to the data base, and line 4 is your password. 
 
 ## How to run it?
 
@@ -29,7 +32,10 @@ It is a system for the operation of a medical clinic, which makes it possible, f
 
 ## In which it was written ?
 
-The system was written in Java using the Spring Boot framework.
+The system was written in Java using the Spring Boot framework. The DBMS is MySQL
 
 ## Let's test it!
 Now you can test the application, for example, with software such as Postman, in order to follow the operation of the programme well
+
+## Documentaction
+After you run, the program vist `http://localhost:8080/swagger-ui/index.html#/`
