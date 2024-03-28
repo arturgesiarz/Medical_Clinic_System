@@ -8,12 +8,13 @@ It is a system for the operation of a medical clinic, which makes it possible, f
   5.  Display basic information about a patient
   6.  Display his/her home address
   7.  Display the patient's examination history
-  8.  Adding a new treatment
-  9.  Removal of treatment
-  10. Enrolling a patient for a given treatment
-  11. Indication that the patient has undergone treatment
-  12. Postpone the visit
-  13. Display all available treatments
+  8.  Search patients by name/surname/fullname
+  9.  Adding a new treatment
+  10.  Removal of treatment
+  11. Enrolling a patient for a given treatment
+  12. Indication that the patient has undergone treatment
+  13. Postpone the visit
+  14. Display all available treatments
 
 ## Before starting
   1.  Make sure you have Java installed
