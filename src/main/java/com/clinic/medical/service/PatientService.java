@@ -23,6 +23,7 @@ public class PatientService {
 
     @Transactional
     public void save(RegisterRequest registerRequest) {
+
         Patient patient = Patient.builder()
                 .firstName(registerRequest.getFirstName())
                 .lastName(registerRequest.getLastName())

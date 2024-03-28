@@ -15,7 +15,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long addressID;
-    @ManyToOne( fetch = LAZY )
+    @OneToOne( fetch = LAZY )
     @JoinColumn( name = "patientID", referencedColumnName = "patientID" )
     private Patient patient;
 

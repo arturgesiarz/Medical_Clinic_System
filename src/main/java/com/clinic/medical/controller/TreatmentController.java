@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -40,6 +41,12 @@ public class TreatmentController {
     public ResponseEntity<String> tookPlaceTreatment(@PathVariable Long patientID, @PathVariable Long treatmentID) {
         treatmentService.tookPlace(patientID, treatmentID);
         return new ResponseEntity<>("The patient has been successfully took placed treatment", HttpStatus.CREATED);
+    }
+
+    @PostMapping("/postponement-visit/{treatmentHistoryID}")
+    public ResponseEntity<String> postponeVisit(@PathVariable Long treatmentHistoryID, @RequestBody Instant newDate) {
+        treatmentService.postponed(treatmentHistoryID, newDate);
+        return new ResponseEntity<>("The visit was postponed successfully!", HttpStatus.CREATED);
     }
 
     @GetMapping("/show-all")

@@ -22,6 +22,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class TreatmentService {
+    private final static Integer ONE_DAY = 86400;
     private final TreatmentRepository treatmentRepository;
     private final TreatmentHistoryRepository treatmentHistoryRepository;
     private final PatientRepository patientRepository;
@@ -57,7 +58,7 @@ public class TreatmentService {
         TreatmentHistory treatmentHistory = TreatmentHistory.builder()
                 .patient(patient)
                 .treatment(treatment)
-                .treatmentDate(Instant.now())
+                .treatmentDate(Instant.now().plusSeconds(ONE_DAY * 3))
                 .itTookPlace(false).build();
 
         treatmentHistoryRepository.save(treatmentHistory);
@@ -76,5 +77,14 @@ public class TreatmentService {
                 .orElseThrow(() -> new TreatmentHistoryNotFoundException(patientID, treatmentID));
 
         treatmentHistory.setItTookPlace(true);
+    }
+
+    @Transactional
+    public void postponed(Long treatmentHistoryID, Instant newDate) {
+        TreatmentHistory treatmentHistory = treatmentHistoryRepository
+                .findById(treatmentHistoryID)
+                .orElseThrow(() -> new TreatmentHistoryNotFoundException(treatmentHistoryID));
+
+        treatmentHistory.setTreatmentDate(newDate);
     }
 }

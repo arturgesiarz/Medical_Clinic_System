@@ -4,4 +4,7 @@ public class TreatmentHistoryNotFoundException extends RuntimeException {
         super("History not found by patient with ID: " + patientID + ", and treatment with ID: " + treatmentID);
 
     }
+    public TreatmentHistoryNotFoundException(Long treatmentHistoryID) {
+        super("History not found by ID: " + treatmentHistoryID);
+    }
 }
