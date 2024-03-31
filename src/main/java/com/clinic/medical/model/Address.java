@@ -1,9 +1,12 @@
 package com.clinic.medical.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Data
@@ -15,19 +18,19 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long addressID;
-    @OneToOne( fetch = LAZY )
+    @OneToOne( fetch = EAGER )
     @JoinColumn( name = "patientID", referencedColumnName = "patientID" )
     private Patient patient;
 
-    @ManyToOne( fetch = LAZY )
+    @ManyToOne( fetch = EAGER )
     @JoinColumn( name = "countryID", referencedColumnName = "countryID" )
     private Country country;
 
-    @ManyToOne( fetch = LAZY )
+    @ManyToOne( fetch = EAGER )
     @JoinColumn( name = "cityID", referencedColumnName = "cityID" )
     private City city;
 
-    @ManyToOne( fetch = LAZY )
+    @ManyToOne( fetch = EAGER )
     @JoinColumn( name = "voivodeshipID", referencedColumnName = "voivodeshipID" )
     private Voivodeship voivodeship;
 

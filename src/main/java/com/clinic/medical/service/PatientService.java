@@ -132,16 +132,16 @@ public class PatientService {
         }
 
     }
-
+    @Transactional(readOnly = true)
     public List<Patient> getAllPatients() {
         return new ArrayList<>(patientRepository.findAll());
     }
-
+    @Transactional(readOnly = true)
     public Patient getPatientGeneral(Long patientID) {
         return patientRepository.findById(patientID)
                 .orElseThrow(() -> new PatientNotFoundException(patientID));
     }
-
+    @Transactional(readOnly = true)
     public Address getPatientAddress(Long patientID) {
         Patient patient = patientRepository.findById(patientID)
                 .orElseThrow(() -> new PatientNotFoundException(patientID));
@@ -149,7 +149,7 @@ public class PatientService {
         return addressRepository.findByPatient(patient)
                 .orElseThrow(RuntimeException::new);
     }
-
+    @Transactional(readOnly = true)
     public List<TreatmentHistory> getPatientTreatmentHistory(Long patientID) {
         Patient patient = patientRepository.findById(patientID)
                 .orElseThrow(() -> new PatientNotFoundException(patientID));
@@ -157,17 +157,17 @@ public class PatientService {
         return treatmentHistoryRepository.findByPatient(patient)
                 .orElseThrow(() -> new PatientNotFoundException(patientID));
     }
-
+    @Transactional(readOnly = true)
     public List<Patient> search(String name, String surname) {
         return patientRepository.findByFirstNameAndLastName(name, surname)
                 .orElseThrow(() -> new PatientNotFoundException());
     }
-
+    @Transactional(readOnly = true)
     public List<Patient> searchByName(String name) {
         return patientRepository.findByFirstNameStartingWith(name)
                 .orElseThrow(() -> new PatientNotFoundException());
     }
-
+    @Transactional(readOnly = true)
     public List<Patient>  searchBySurname(String surname) {
         return patientRepository.findByLastNameStartingWith(surname)
                 .orElseThrow(() -> new PatientNotFoundException());
